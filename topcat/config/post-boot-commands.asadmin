@@ -1,0 +1,4 @@
+set resources.jdbc-connection-pool.topcat.property.url=jdbc:mysql://topcat_mariadb_container:3306/topcat
+set resources.jdbc-connection-pool.topcat.property.user=icatdbuser
+set resources.jdbc-connection-pool.topcat.property.password=icatdbuserpw
+create-javamail-resource --mailhost smtp.example.com --mailuser user@example.com --fromaddress no-reply@example.com --property mail.smtp.port="25":mail.smtp.from="no-reply@example.com" mail/topcat

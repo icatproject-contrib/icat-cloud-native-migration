@@ -1,0 +1,7 @@
+{
+  "backend": "db",
+  "db_url": "mysql+pymysql://icatdbuser:icatdbuserpw@icat_mariadb_container:3306/icatdb",
+  "log_level": "WARN",
+  "log_location": "/logs.log",
+  "generate_swagger": false
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="icat" transaction-type="JTA">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<jta-data-source>jdbc/icat</jta-data-source>
+		<properties>
+			<property name="eclipselink.cache.shared.default" value="false"/>
+			<property name="eclipselink.logging.level" value="OFF"/>
+			<property name="eclipselink.logging.level.sql" value="OFF"/>
+			<property name="eclipselink.logging.parameters" value="false"/>
+			<property name="eclipselink.ddl-generation" value="create-tables"/>
+			<property name="eclipselink.ddl-generation.output_mode" value="both"/>
+			<property name="eclipselink.deploy-on-startup" value="true"/>
+			<property name="eclipselink.target-server" value="Glassfish"/>
+			<property name="eclipselink.target-database" value="MySQL"/>
+		</properties>
+	</persistence-unit>
+</persistence>
