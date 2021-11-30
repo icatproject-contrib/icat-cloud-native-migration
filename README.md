@@ -154,15 +154,15 @@ The table below shows how the various components of icat can be accessed both in
 
 :information_source: **The internal URL's are mapped to container names and are set in the docker-compose file**. The database urls cannot be accessed directly over https in the browser.
 
-| Service              | Internal URL                                | External URL             |
-| -------------------- | ------------------------------------------- | ------------------------ |
-| ICAT server          | http://icat_payara_container:8080           | https://localhost:14848/ |
-| Auth Service         | http://auth_payara_container:8080           | https://localhost:24848/ |
-| IDS Service          | http://ids_payara_container:8080            | https://localhost:34848/ |
-| Lucene Service       | http://lucene_payara_container:8080         | https://localhost:44848/ |
-| Topcat               | -                                           | https://localhost:54848/ |
-| ICAT server database | http://icat_mariadb_container:3306/icatdb   | https://localhost:3306/  |
-| Topcat database      | http://topcat_mariadb_container:3306/topcat | https://localhost:2306/  |
+| Service              | Internal URL                                | Payara Admin URL         | App URL                                       |
+| -------------------- | ------------------------------------------- | ------------------------ | --------------------------------------------- |
+| ICAT server          | http://icat_payara_container:8080           | https://localhost:14747/ | https://localhost:18181/icat/version          |
+| Auth Service         | http://auth_payara_container:8080           | https://localhost:24747/ | https://localhost:28181/authn.simple/version/ |
+| IDS Service          | http://ids_payara_container:8080            | https://localhost:34747/ | https://localhost:38181/ids/version/          |
+| Lucene Service       | http://lucene_payara_container:8080         | https://localhost:44747/ | https://localhost:48181/icat.lucene/version   |
+| Topcat               | -                                           | https://localhost:54747/ | https://localhost:58181/topcat/version/       |
+| ICAT server database | http://icat_mariadb_container:3306/icatdb   | https://localhost:3306/  |                                               |
+| Topcat database      | http://topcat_mariadb_container:3306/topcat | https://localhost:2306/  |                                               |
 
 
 
