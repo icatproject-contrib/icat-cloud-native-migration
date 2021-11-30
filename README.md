@@ -155,7 +155,7 @@ The table below shows how the various components of icat can be accessed both in
 :information_source: **The internal URL's are mapped to container names and are set in the docker-compose file**. The database urls cannot be accessed directly over https in the browser.
 
 | Service              | Internal URL                                | Payara Admin URL         | App URL                                       |
-| -------------------- | ------------------------------------------- | ------------------------ | --------------------------------------------- |
+| :------------------- | ------------------------------------------- | ------------------------ | --------------------------------------------- |
 | ICAT server          | http://icat_payara_container:8080           | https://localhost:14747/ | https://localhost:18181/icat/version          |
 | Auth Service         | http://auth_payara_container:8080           | https://localhost:24747/ | https://localhost:28181/authn.simple/version/ |
 | IDS Service          | http://ids_payara_container:8080            | https://localhost:34747/ | https://localhost:38181/ids/version/          |
@@ -171,15 +171,10 @@ The table below shows how the various components of icat can be accessed both in
 For now, there are two types of configuration to make:
 
 - **Image configuration:** sets up the files and system properties the service needs to create the base image. This includes things like the web.xml and run.properties and any JVM settings to make.
+
 - **Container configuration**: this is applied when the container is created and typically includes urls of other docker services, things that only exist once they have been started.
 
-## Example start up
-
-This is what starting up the cluster typically looks like. This is from scratch and includes the downloading and configuration of images, which would typically only be done once.
-
-<img src="./documentation/images/2021-10-29 10.39.12.gif" width="920px" />
-
-
+  
 
 ## Trouble shooting
 
