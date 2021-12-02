@@ -64,7 +64,7 @@ Once running, the database can be logged into by either:
 
 Once running, the container can logged into by either:
 
-- using the Payara UI tool at https://localhost:14848/ using **username/password: admin/admin**
+- using the Payara UI tool at https://localhost:14747/ using **username/password: admin/admin**
 
 - running `docker exec -it icat_payara_container bash` where `icat_payara_container` is the name of the running container,
 
@@ -76,7 +76,7 @@ Once running, the container can logged into by either:
 
 Once running, the container can logged into by either:
 
-- using the Payara UI tool at https://localhost:24848/ using **username/password: admin/admin**
+- using the Payara UI tool at https://localhost:24747/ using **username/password: admin/admin**
 
 - running `docker exec -it auth_payara_container bash` where `auth_payara_container` is the name of the running container.
 
@@ -88,7 +88,7 @@ Once running, the container can logged into by either:
 
 Once running, the container can logged into by either:
 
-- using the Payara UI tool at https://localhost:34848/ using **username/password: admin/admin**
+- using the Payara UI tool at https://localhost:34747/ using **username/password: admin/admin**
 
 - running `docker exec -it ids_payara_container bash` where `ids_payara_container` is the name of the running container.
 
@@ -100,7 +100,7 @@ Once running, the container can logged into by either:
 
 Once running, the container can logged into by either:
 
-- using the Payara UI tool at https://localhost:44848/ using **username/password: admin/admin**
+- using the Payara UI tool at https://localhost:44747/ using **username/password: admin/admin**
 
 - Running `docker exec -it lucene_payara_container bash` where `lucene_payara_container` is the name of the running container.
 
@@ -112,7 +112,7 @@ Once running, the container can logged into by either:
 
 Once running, the container can logged into by either:
 
-- using the Payara UI tool at https://localhost:54848/ using **username/password: admin/admin**
+- using the Payara UI tool at https://localhost:54747/ using **username/password: admin/admin**
 
 - Running `docker exec -it topcat_payara_container bash` where `topcat_payara_container` is the name of the running container.
 
