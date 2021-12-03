@@ -1,7 +1,5 @@
 # ICAT Cloud Native Migration  :whale:
 
-[[_TOC_]]
-
 This project stores the necessary configuration and code changes needed to migrate the ICAT application from a single VM installation to multiple, smaller micro-services.
 
 The included Dockerfiles build on the official payara 5 docker image, installing the necessary system and application configuration, before deploying each component of ICAT in their own application server.
@@ -132,11 +130,18 @@ A separate container has been created to assist in adding some test data to be a
 
 :information_source: Note that stopping and starting the suite of containers in `docker-compose` may cause certain errors to appear in the output, this is due to the applications trying to re-create tables where they already exist.
 
+## Minimum Stack
 
+Due to the various inter-dependancies, the following containers are needed In order to get a minimal icat stack up and running:
+
+- Icat.server
+- Authenticator
+- IDS
+- Icat Maria db
 
 ## Getting data out of the stack
 
-As well as viewing the data through the Topcat web UI, curl can also be used to query ICAT directly from your local machine.
+As well as viewing the data through the [Topcat web UI](https://localhost:54747/), curl can also be used to query ICAT directly from your local machine.
 
 - `curl -k --data 'json={"plugin":"simple", "credentials": [{"username":"root"}, {"password": "pw"}]}' -w'\n' https://localhost:18181/icat/session` to get session id
 
