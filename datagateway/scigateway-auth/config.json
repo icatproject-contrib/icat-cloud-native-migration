@@ -1,7 +1,7 @@
 {
-    "host": "127.0.0.1",
-    "port": 5050,
-    "debug_mode": true,
+    "host": "0.0.0.0",
+    "port": 5010,
+    "debug_mode": false,
     "icat_url": "https://icatisis.esc.rl.ac.uk/icat",
     "log_level": "DEBUG",
     "log_location": "logs.log",
