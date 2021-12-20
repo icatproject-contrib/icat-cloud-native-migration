@@ -38,37 +38,37 @@ services:
   #   ports:
   #     - 8080:8080
 
-  icat_payara:
-    restart: always
-    image: icat_payara_image
-    container_name: icat_payara_container
-    build: icat/.
-    ports:
-      - 14747:4848 # payara port
-      - 18181:8181 # https port
-    volumes:
-      - type: bind
-        source: ./icat/config/post-boot-commands.asadmin
-        target: /config/post-boot-commands.asadmin
-    environment:
-      - POSTBOOT_COMMANDS=/config/post-boot-commands.asadmin
+  # icat_payara:
+  #   restart: always
+  #   image: icat_payara_image
+  #   container_name: icat_payara_container
+  #   build: icat/.
+  #   ports:
+  #     - 14747:4848 # payara port
+  #     - 18181:8181 # https port
+  #   volumes:
+  #     - type: bind
+  #       source: ./icat/config/post-boot-commands.asadmin
+  #       target: /config/post-boot-commands.asadmin
+  #   environment:
+  #     - POSTBOOT_COMMANDS=/config/post-boot-commands.asadmin
 
-  auth_payara:
-    restart: unless-stopped
-    image: auth_payara_image
-    container_name: auth_payara_container
-    build: authentication/.
-    ports:
-      - 24747:4848
-      - 28181:8181
+  # auth_payara:
+  #   restart: unless-stopped
+  #   image: auth_payara_image
+  #   container_name: auth_payara_container
+  #   build: authentication/.
+  #   ports:
+  #     - 24747:4848
+  #     - 28181:8181
 
-  ids_payara:
-    image: ids_payara_image
-    container_name: ids_payara_container
-    build: ids/.
-    ports:
-      - 34747:4848
-      - 38181:8181
+  # ids_payara:
+  #   image: ids_payara_image
+  #   container_name: ids_payara_container
+  #   build: ids/.
+  #   ports:
+  #     - 34747:4848
+  #     - 38181:8181
 
   # lucene_payara:
   #   image: lucene_payara_image
@@ -100,16 +100,37 @@ services:
   #     icat_mariadb:
   #       condition: service_healthy
 
-  scigateway-auth:
-    image: scigateway_auth_image
-    container_name: scigateway_auth_container
-    build: datagateway/scigateway-auth/.
-    ports:
-      - 5010:5010
+  # scigateway-auth:
+  #   image: scigateway_auth_image
+  #   container_name: scigateway_auth_container
+  #   build: scigateway-auth/.
+  #   ports:
+  #     - 5010:5010
 
-  scigateway:
-    image: scigateway_image
-    container_name: scigateway_container
-    build: datagateway/scigateway/.
+  # scigateway:
+  #   image: scigateway_image
+  #   container_name: scigateway_container
+  #   build: scigateway/.
+  #   ports:
+  #     - 3000:3000
+
+  datgateway_dataview:
+    image: datgateway_dataview_image
+    container_name: datgateway_dataview_container
+    build: datagateway/dataview/.
     ports:
-      - 3000:3000
+      - 8080:80
+
+  datgateway_download:
+    image: datgateway_download_image
+    container_name: datgateway_download_container
+    build: datagateway/download/.
+    ports:
+      - 8081:80
+
+  datgateway_search:
+    image: datgateway_search_image
+    container_name: datgateway_search_container
+    build: datagateway/search/.
+    ports:
+      - 8082:80
