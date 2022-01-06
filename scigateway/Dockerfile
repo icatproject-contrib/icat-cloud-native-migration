@@ -9,6 +9,9 @@ ADD https://github.com/ral-facilities/scigateway/archive/refs/heads/master.zip .
 RUN unzip /app/master.zip -d ./tmp
 RUN mv ./tmp/*/* .
 RUN yarn install
+# Copy setting files across
+COPY config/dev-plugin-settings.json /app/micro-frontend-tools/
+COPY config/settings.json /app/public/
 # Expose port
 EXPOSE 3000
 # Start the app

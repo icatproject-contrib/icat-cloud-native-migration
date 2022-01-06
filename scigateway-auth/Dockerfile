@@ -24,7 +24,7 @@ RUN poetry install
 RUN ssh-keygen -q -t rsa -N '' -f /keys/jwt-key
 
 # copy the config across
-COPY ./config.json /app/scigateway_auth/
+COPY config/config.json /app/scigateway_auth/
 
 # set the app running
 #ENTRYPOINT ["tail", "-f", "/dev/null"]

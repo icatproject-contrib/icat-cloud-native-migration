@@ -1,0 +1,41 @@
+{
+  "facilityName": "Generic",
+  "idsUrl": "example.ids.url",
+  "apiUrl": "example.api.url",
+  "downloadApiUrl": "example.download.api.url",
+  "icatUrl": "example.icat.url",
+  "selectAllSetting": true,
+  "searchableEntities": ["investigation", "dataset", "datafile"],
+  "maxNumResults": 300,
+  "helpSteps": [
+    {
+      "target": "#plugin-link--search-data",
+      "content": "DataGateway Search allows you to search for specific datasets, datafiles or investigations using date and text filters"
+    },
+    {
+      "target": ".tour-search-textfield",
+      "content": "Allows you to search for the results based on their titles"
+    },
+    {
+      "target": ".tour-search-checkbox",
+      "content": "Allows you to filter the search results based on the specific datasets, datafiles or investigations"
+    },
+    {
+      "target": ".tour-search-dates",
+      "content": "Allows you to filter the search results based on the specific dates"
+    },
+    {
+      "target": ".tour-search-tab-select",
+      "content": "Select the type of search results to view"
+    }
+  ],
+  "routes": [
+    {
+      "section": "Discover",
+      "link": "/search/data",
+      "displayName": "Search",
+      "order": 0
+    }
+  ],
+  "pluginHost": "http://localhost:3000"
+}
