@@ -1,9 +1,9 @@
 {
-  "facilityName": "Generic",
+  "facilityName": "LILS",
   "features": {},
-  "idsUrl": "example.ids.url",
+  "idsUrl": "https://localhost:38181/ids",
   "apiUrl": "example.api.url",
-  "downloadApiUrl": "example.download.api.url",
+  "downloadApiUrl": "https://localhost:58181/topcat",
   "selectAllSetting": true,
   "helpSteps": [
     {
@@ -95,5 +95,5 @@
       "order": 6
     }
   ],
-  "pluginHost": "http://localhost:3000"
+  "pluginHost": "http://localhost:8081"
 }

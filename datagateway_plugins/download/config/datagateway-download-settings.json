@@ -1,21 +1,16 @@
 {
-  "facilityName": "Generic",
+  "facilityName": "LILS",
   "apiUrl": "example.api.url",
-  "downloadApiUrl": "example.download.api.url",
-  "idsUrl": "example.ids.url",
-  "icatUrl": "example.icat.url",
+  "downloadApiUrl": "https://localhost:58181/topcat",
+  "idsUrl": "https://localhost:38181/ids",
+  "icatUrl": "https://localhost:18181/icat",
   "fileCountMax": 5000,
   "totalSizeMax": 1000000000000,
   "accessMethods": {
     "https": {
-      "idsUrl": "example.ids.url",
+      "idsUrl": "https://localhost:38181/ids",
       "displayName": "HTTPS",
       "description": "Example description for HTTPS access method."
-    },
-    "globus": {
-      "idsUrl": "example.ids.url",
-      "displayName": "Globus",
-      "description": "Example description for Globus access method."
     }
   },
   "helpSteps": [
@@ -63,5 +58,5 @@
       "order": 1
     }
   ],
-  "pluginHost": "http://localhost:3000"
+  "pluginHost": "http://localhost:8082"
 }

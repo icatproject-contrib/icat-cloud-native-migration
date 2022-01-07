@@ -1,9 +1,9 @@
 {
-  "facilityName": "Generic",
-  "idsUrl": "example.ids.url",
+  "facilityName": "LILS",
+  "idsUrl": "https://localhost:38181/ids",
   "apiUrl": "example.api.url",
-  "downloadApiUrl": "example.download.api.url",
-  "icatUrl": "example.icat.url",
+  "downloadApiUrl": "https://localhost:58181/topcat",
+  "icatUrl": "https://localhost:18181/icat",
   "selectAllSetting": true,
   "searchableEntities": ["investigation", "dataset", "datafile"],
   "maxNumResults": 300,
@@ -37,5 +37,5 @@
       "order": 0
     }
   ],
-  "pluginHost": "http://localhost:3000"
+  "pluginHost": "http://localhost:8083"
 }
