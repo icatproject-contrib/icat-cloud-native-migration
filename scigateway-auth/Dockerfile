@@ -6,10 +6,10 @@ FROM python:3.7
 RUN pip install poetry
 RUN apt-get update && apt-get install -y unzip openssh-client
 
-# make dir to hold keys
-RUN mkdir /keys
-
 WORKDIR /app
+
+# make dir to hold keys
+RUN mkdir keys
 
 # get the repo
 ADD https://github.com/ral-facilities/scigateway-auth/archive/refs/heads/master.zip /app
@@ -21,7 +21,7 @@ RUN mv ./tmp/*/* .
 # install app dependancies
 RUN poetry config virtualenvs.create false
 RUN poetry install
-RUN ssh-keygen -q -t rsa -N '' -f /keys/jwt-key
+RUN ssh-keygen -q -t rsa -m 'PEM' -N '' -f keys/jwt-key
 
 # copy the config across
 COPY config/config.json /app/scigateway_auth/
