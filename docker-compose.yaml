@@ -107,30 +107,30 @@ services:
   #   ports:
   #     - 5010:5010
 
-  # scigateway:
-  #   image: scigateway_image
-  #   container_name: scigateway_container
-  #   build: scigateway/.
+  scigateway:
+    image: scigateway_image
+    container_name: scigateway_container
+    build: scigateway/.
+    ports:
+      - 3000:3000
+
+  # datgateway_dataview:
+  #   image: datgateway_dataview_image
+  #   container_name: datgateway_dataview_container
+  #   build: datagateway_plugins/dataview/.
   #   ports:
-  #     - 3000:3000
+  #     - 8081:80
 
-  datgateway_dataview:
-    image: datgateway_dataview_image
-    container_name: datgateway_dataview_container
-    build: datagateway/dataview/.
-    ports:
-      - 8080:80
+  # datgateway_download:
+  #   image: datgateway_download_image
+  #   container_name: datgateway_download_container
+  #   build: datagateway_plugins/download/.
+  #   ports:
+  #     - 8082:80
 
-  datgateway_download:
-    image: datgateway_download_image
-    container_name: datgateway_download_container
-    build: datagateway/download/.
-    ports:
-      - 8081:80
-
-  datgateway_search:
-    image: datgateway_search_image
-    container_name: datgateway_search_container
-    build: datagateway/search/.
-    ports:
-      - 8082:80
+  # datgateway_search:
+  #   image: datgateway_search_image
+  #   container_name: datgateway_search_container
+  #   build: datagateway_plugins/search/.
+  #   ports:
+  #     - 8083:80
