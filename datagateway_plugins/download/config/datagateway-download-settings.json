@@ -1,6 +1,6 @@
 {
   "facilityName": "LILS",
-  "apiUrl": "https://localhost:5020",
+  "apiUrl": "http://localhost:5020",
   "downloadApiUrl": "https://localhost:58181/topcat",
   "idsUrl": "https://localhost:38181/ids",
   "icatUrl": "https://localhost:18181/icat",
