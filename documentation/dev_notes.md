@@ -83,7 +83,7 @@ The line between image configuration and container config is blurred, mainly dow
 
 ## :arrow_right: Architectural Overview
 
-<img src="./images/icat cloud native architecture.png" width="920px" />
+<img src="/Users/alexkemp/Developement/icat/backup/03.12.21/gitLab/icat-cloud-native-migration/documentation/images/icat cloud native architecture.png" width="920px" />
 
 
 ## :arrow_right: Work plan
@@ -106,7 +106,7 @@ The line between image configuration and container config is blurred, mainly dow
 - Plus, some operations like copying content into the container can only be done in dockerfiles: 
   `COPY x Y`
 - Environment variables can be passed in, in docker files, by using `ENV` keyword; for example:
-   `ENV MARIADB_DATABASE icatdb`
+  `ENV MARIADB_DATABASE icatdb`
 
 
 
@@ -230,7 +230,7 @@ For this reason we'll copy the all the configuration over and run the setup scri
      - Run as a init_.sh file
 
        - :skull_and_crossbones: There doesn't seem to be any std output for commands ran this way
-       
+
          
 
 2. Re-write the python script in bash so it can be applied on startup.
@@ -291,12 +291,12 @@ So Based on this we have options:
 
 - Had to change data source class name from
 
-  -  `com.mysql.jdbc.jdbc2.optional.MysqlDataSource` 
+  - `com.mysql.jdbc.jdbc2.optional.MysqlDataSource` 
 
     to 
 
   - `com.mysql.cj.jdbc.MysqlDataSource `
-  
+
 - Upgraded sql connector from 5 to 8
 
 ### Deployment of icat-server
@@ -385,34 +385,35 @@ Setting up the Auth image, which should address one of the icat issues above
 
 - Had to refactor db setup as had to create a new data base for tomcat, couldn't use the existing icat
 
-  <img src="./images/mariadb_setup.png" width="520px" />
+  <img src="/Users/alexkemp/Developement/icat/backup/03.12.21/gitLab/icat-cloud-native-migration/documentation/images/mariadb_setup.png" width="520px" />
 
   - All database comms inside docker is done on port 3306
-  
+
   - This is because the address is resolved by host name in the Docker file:
+
     - `ARG DATABASE_URL=jdbc:mysql://topcat_mariadb_container:3306/topcat`
-    
+
   - `topcat.properties`is store in
-  
+
     - Old world: `home/glassfish/payara41/glassfish/domain1/config`
     - New world: `payara/appserver/glassfish/domains/domain1/config`
-  
+
   - The `contents/pages` directory is copied into the root level of the war file before it is re-packed
-  
+
   - Getting `Archive type of /opt/payara/deployments/migrations was not recognized` error
-  
+
     - I think its because its trying to deploy the folder because its in the deploy dir
-  
+
   - `facility.LILS.downloadType.http` should be ids url so:
-  
+
     - `facility.LILS.downloadType.http` = http://ids_payara_container:8080
-  
+
   - Needed to setup the mail javamail-resource
-  
+
   - Needed to copy all of the contents of the distro into the war file, not just the META and WEB inf
-  
+
   - Can only log in using CHROME, Firefox says no!
-  
+
     
 
 ## :arrow_right: Adding Test Data Automatically on start:
@@ -441,12 +442,13 @@ Setting up the Auth image, which should address one of the icat issues above
   ```
 
   - The testdata container needs the mariadb and the icat payara app to be up and running. This is because the icat payara app creates the tables.
+
     - Mariadb starts and creates the icat database
-    
+
     - Icat-server starts and add the tables, runs the migrations
-    
+
     - Only then can the testdata container run and put data into the tables
-    
+
       
 
 ## :arrow_right: DataGateWay
@@ -466,6 +468,24 @@ Setting up the Auth image, which should address one of the icat issues above
 - No distros yet so need to pull down raw git repo
 - The poetry framework make installing the dependancies easy
 - Generatering keys inside container
+- Host name if config needs to be `0.0.0.0` for localhost access
+- Need to think about how app health is reported and internal server errors, to file and terminal?
+
+### Scigateway
+
+-  **Scigateway** uses **Datagateway** plugins, these are [here](https://github.com/ral-facilities/datagateway/releases)
+-  These are not application servers so need to be served. Probably using apache.
+-  Using `yarn start` to start scigateway for now which is not meant for development, that will need `yarn build` to build the app then another server (nginx or apache) to serve it up. Good tutorial [here](https://dev.to/karanpratapsingh/dockerize-your-react-app-4j2e).
+-  Need to set up [settings file in Scigateway](https://github.com/ral-facilities/scigateway/blob/master/public/settings.example.json) to point to auth url.... But which auth??
+-  Need to configure the Scigateway plugins [settings file](https://github.com/ral-facilities/scigateway/blob/master/micro-frontend-tools/dev-plugin-settings.example.json). Names in the Scigateway plugins need to match the names of the plugins. 
+-  Need to set up settings files in each of the plugins.
+-  `docker exec -t -i scigateway_container /bin/sh` to bash into node container
+
+### Plugins:
+
+-  There zips are build with a deployment yaml [here](https://github.com/ral-facilities/datagateway/blob/6dd8b5a2c3394117f6f98bf5f22b917ce7860c6a/.github/workflows/release-build.yml#L51) , this builds a main.js in each of the 3 plugins which holds urls Scigateway needs. We can't copy the main.js at build time as it needs to be dynamic so will need to find and replace certain URL when building the docker image.
+-  Scigateway uses these urls in main.js files to give higher, user level access to the plugins from scigateway home page
+-  Need to edit the http.conf to allow for CORS
 
 ---------------------------------------------------
 
@@ -474,6 +494,7 @@ Setting up the Auth image, which should address one of the icat issues above
 - [x] Get topcat deployed
 
 - [x] Add test data automatically, create a container with the data gateway api in it so I can use the script to auto generate test data on startup
+
   - [x] Optimise icat health check 
   - [x] Sort mariadb warning 
   - [x] Refactor lay out 
@@ -481,7 +502,7 @@ Setting up the Auth image, which should address one of the icat issues above
   - [x] Get rid of config and use env files for testdata container
   - [x] sort commands/config name convention out 
   - [x] Document compose health check setup 
-  
+
 - [x] Document config setup in readme
 
 - [ ] Get datagatway deployed
@@ -503,14 +524,17 @@ Setting up the Auth image, which should address one of the icat issues above
 - [ ] Change ICAT to use environment variables instead of config files
 
 - [ ] Need to generally do some load testing of icat to test jvm memory options which are set by default by the container
+
   - [ ] Good application of this from divileroo [here](https://deliveroo.engineering/2019/01/08/how-to-debug-memory-usage-of-a-jvm-based-application.html)
   - [ ] Test `ExitOnOutOfMemoryError` vs `OnOutOfMemoryError` and other jvm options
-  
+
 - [ ] Automate the `mysql_secure_installation` for the database, [resource here](https://stackoverflow.com/questions/24270733/automate-mysql-secure-installation-with-echo-command-via-a-shell-script#27759061), if needed
 
 - [ ] Put all the docker images in their respective repos instead of one big repo
 
 - [ ] Persistent files/volumes for ids and lucene
+
+- [ ] Productionize datagateway stack
 
   
 
@@ -519,6 +543,12 @@ Setting up the Auth image, which should address one of the icat issues above
 - [ ] Sort out creating keys outside of image.
 
 - [ ] App to check config on app start
+
+  
+
+  Datagateway API
+
+- [ ] Remove root user name and password and instead add a rule to ICAT to allow the IDS reader account to have read all access to the database
 
   
 
