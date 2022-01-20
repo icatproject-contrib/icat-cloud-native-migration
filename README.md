@@ -6,11 +6,15 @@ The diagram below shows the various components of ICAT and how they communicate 
 
 ## Topcat Architectural View
 
+The following diagram shows how the various components are connected to deliver functionality with an Topcat front end.
+
 <img src="./documentation/images/icat cloud native architecture.png" width="920px" /> 
 
 
 
 ## SciGateWay / DataGateWay View
+
+The following diagram shows how the various components are connected to deliver functionality with an SciGateWay front end.
 
 <img src="./documentation/images/icat cloud native architecture_DGW.png" width="920px" /> 
 
