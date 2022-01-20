@@ -6,7 +6,7 @@ The diagram below shows the various components of ICAT and how they communicate 
 
 ## Topcat Architectural View
 
-The following diagram shows how the various components are connected to deliver functionality with an Topcat front end.
+The following diagram shows how the various components are connected to deliver functionality with an **Topcat** front end.
 
 <img src="./documentation/images/icat cloud native architecture.png" width="920px" /> 
 
@@ -14,7 +14,7 @@ The following diagram shows how the various components are connected to deliver 
 
 ## SciGateWay / DataGateWay View
 
-The following diagram shows how the various components are connected to deliver functionality with an SciGateWay front end.
+The following diagram shows how the various components are connected to deliver functionality with an **SciGateWay** front end.
 
 <img src="./documentation/images/icat cloud native architecture_DGW.png" width="920px" /> 
 
@@ -231,6 +231,10 @@ This might be handy to debug any connection problems. For example; if we wanted 
 - Log into the ICAT container:
 
   `docker exec -it icat_payara_container bash`
+
+  or
+
+  `docker exec -t -i scigateway_container /bin/sh` for a node container
 
 - Get the version of the auth service:
 
