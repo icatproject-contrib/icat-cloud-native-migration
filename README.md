@@ -22,15 +22,23 @@ The following diagram shows how the various components are connected to deliver 
 
 ## Installation  
 
-Docker is needed to run the ICAT suite of micro-services.
+[Docker](https://www.docker.com/) is needed to run the ICAT suite of micro-services (see this information on [getting started with Docker](https://www.docker.com/get-started)).
 
 **Google Chrome is needed to be able to log into Topcat.**
 
-Once the repository has been checked out, in a terminal, navigate to the folder holding the `docker-compose.yaml`. 
+Once the repository has been checked out, in a terminal, navigate to the folder holding the `docker-compose.yaml`: 
 
-- run `docker-compose up --build`. To start the stack
+```
+git clone https://github.com/icatproject-contrib/icat-cloud-native-migration.git
 
-- run `docker-compose down`. To destroy the stack
+cd icat-cloud-native-migration
+```
+
+Then, the docker-compose commands to run are:
+
+- `docker-compose up --build`. To start the stack (this process will take some time to create all of the dockerised components)
+
+- `docker-compose down`. To destroy the stack
 
 - :information_source: Note: run `docker system prune -a` to remove all images and containers
 
