@@ -1,0 +1,31 @@
+.entityRow:nth-child(even) {
+    background-color: var(--color-grey-light);
+}
+
+.entityRow:nth-child(odd) {
+    background-color: var(--color-grey-very-light);
+}
+
+.markedForDeletion {
+    text-decoration: line-through;
+}
+
+.entityRow:nth-child(even) .markedForDeletion {
+    background-color: var(--color-red-light);
+}
+
+.entityRow:nth-child(odd) .markedForDeletion {
+    background-color: var(--color-red-very-light);
+}
+
+.entityRow:nth-child(even) .newRow {
+    background-color: var(--color-green-light);
+}
+
+.entityRow:nth-child(odd) .newRow {
+    background-color: var(--color-green-very-light);
+}
+
+.editInput {
+    width: 95%;
+}

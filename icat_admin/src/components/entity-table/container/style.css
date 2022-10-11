@@ -1,0 +1,49 @@
+.tableTitleBar {
+    display: flex;
+    align-items: center;
+    margin-top: -0.5em;
+    margin-bottom: -0.5em;
+}
+
+.tableTitleBar h2 {
+    margin-right: 0.2em;
+    cursor: default;
+}
+
+.tableTitleBar > *:not(:first-child) {
+    margin: 0 0.5em;
+}
+
+.tableActionsBar {
+    display: flex;
+    gap: 1em;
+}
+
+.tableActionsBar span button{
+    margin: 0 0.1em;
+}
+
+.filterInput {
+    margin: 0 1em;
+}
+
+.tableTitleCount {
+    color: grey;
+    font-size: small;
+    cursor: default;
+}
+
+.paginationControl {
+}
+
+.paginationControl input {
+    max-width: 5em;
+}
+
+.paginationControl > * {
+    margin: 0 0.15em;
+}
+
+.paginationControl label {
+    margin-right: 0.1em;
+}

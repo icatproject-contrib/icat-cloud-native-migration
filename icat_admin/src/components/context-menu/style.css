@@ -1,0 +1,30 @@
+.contextMenu {
+    position: absolute;
+    background-color: var(--color-grey-slightly-light);
+    top: 200px;
+    left: 200px;
+    border: solid var(--color-grey-dark) 2px;
+}
+
+.contextMenu h3 {
+    margin: 0.3em 0 0 0.15em;
+    user-select: none;
+}
+
+.contextMenuRow {
+    background-color: white;
+    margin-top: 0.06em;
+    padding: 0 0.1em;
+}
+
+.contextMenuRow:hover {
+    background-color: var(--color-grey);
+    user-select: none;
+}
+
+.contextMenuList {
+    list-style: none;
+    margin: 0.05em;
+    padding: 0.05em 0.15em;
+}
+

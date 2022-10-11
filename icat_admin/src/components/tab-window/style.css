@@ -1,0 +1,13 @@
+.tabSwitcher {
+    display: inline-block;
+    background-color: var(--color-grey-slightly-dark);
+    padding: 0.2em;
+}
+
+.tabSwitcher button {
+    margin: 0 0.1em;
+}
+
+.selectedTab {
+    background-color: var(--color-blue-light-pale);
+}
