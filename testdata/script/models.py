@@ -246,6 +246,28 @@ class DATACOLLECTION(Base, EntityHelper, metaclass=EntityMeta):
     modTime = Column("MOD_TIME", DateTime, nullable=False)
 
 
+class DATAPUBLICATIONTYPE(Base, EntityHelper, metaclass=EntityMeta):
+    __tablename__ = "DATAPUBLICATIONTYPE"
+    __singularfieldname__ = "dataPublicationType"
+    __pluralfieldname__ = "dataPublicationTypes"
+    __table_args__ = (Index("UNQ_DATAPUBLICATIONTYPE_0", "FACILITY_ID", "NAME"),)
+
+    id = Column("ID", BigInteger, primary_key=True)
+    modId = Column("MOD_ID", String(255), nullable=False)
+    name = Column("NAME", String(255), nullable=False)
+    description = Column("DESCRIPTION", String(255), nullable=False)
+    createId = Column("CREATE_ID", String(255), nullable=False)
+    createTime = Column("CREATE_TIME", DateTime, nullable=False)
+    modTime = Column("MOD_TIME", DateTime, nullable=False)
+    facilityID = Column("FACILITY_ID", ForeignKey("FACILITY.ID"), nullable=False)
+
+    FACILITY = relationship(
+        "FACILITY",
+        primaryjoin="DATAPUBLICATIONTYPE.facilityID == FACILITY.id",
+        backref="dataPublicationTypes",
+    )
+
+
 class DATACOLLECTIONDATAFILE(Base, EntityHelper, metaclass=EntityMeta):
     __tablename__ = "DATACOLLECTIONDATAFILE"
     __singularfieldname__ = "dataCollectionDatafile"
