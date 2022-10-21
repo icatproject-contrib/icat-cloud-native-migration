@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import argparse
 import datetime
 from multiprocessing import Process
+import doiminter
 
 from faker import Faker
 from sqlalchemy import create_engine
@@ -748,6 +749,9 @@ def main():
         f" {datetime.datetime.now() - start_time}",
     )
 
+    print("Adding specific testing data")
+    doi = doiminter.DoiMinter()
+    doi.add_specific_entries()
 
 if __name__ == "__main__":
     main()
