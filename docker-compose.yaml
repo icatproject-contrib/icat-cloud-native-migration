@@ -9,18 +9,18 @@ services:
     ports:
       - "8080:8080"
 
-#   topcat_mariadb:
-#     restart: always
-#     image: mariadb:latest
-#     container_name: topcat_mariadb_container
-#     ports:
-#       - 2306:3306
-#     environment:
-#       MYSQL_ROOT_PASSWORD: pw
-#       MARIADB_DATABASE: topcat
-#       MARIADB_USER: icatdbuser
-#       MARIADB_PASSWORD: icatdbuserpw
-#
+  topcat_mariadb:
+    restart: always
+    image: mariadb:latest
+    container_name: topcat_mariadb_container
+    ports:
+      - "2306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: pw
+      MARIADB_DATABASE: topcat
+      MARIADB_USER: icatdbuser
+      MARIADB_PASSWORD: icatdbuserpw
+
   icat_mariadb:
      restart: always
      image: mariadb:latest
