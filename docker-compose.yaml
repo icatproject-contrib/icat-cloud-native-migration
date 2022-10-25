@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-
+  # install a basic setup
   icat_admin:
     image: icat_admin_image
     container_name: icat_admin_container
@@ -74,36 +74,6 @@ services:
        - "24747:4848"
        - "28181:8181"
 
-#  # ids_payara:
-#  #   image: ids_payara_image
-#  #   container_name: ids_payara_container
-#  #   build: ids/.
-#  #   ports:
-#  #     - 34747:4848
-#  #     - 38181:8181
-#
-#  # # lucene_payara:
-#  # #   image: lucene_payara_image
-#  # #   container_name: lucene_payara_container
-#  # #   build: lucene/.
-#  # #   ports:
-#  # #     - 44747:4848
-#  # #     - 48181:8181
-#
-#  # topcat_payara:
-#  #   image: topcat_payara_image
-#  #   container_name: topcat_payara_container
-#  #   build: topcat/.
-#  #   ports:
-#  #     - 54747:4848
-#  #     - 58181:8181
-#  #   volumes:
-#  #     - type: bind
-#  #       source: ./topcat/config/post-boot-commands.asadmin
-#  #       target: /config/post-boot-commands.asadmin
-#  #   environment:
-#  #     - POSTBOOT_COMMANDS=/config/post-boot-commands.asadmin
-#
   testdata:
     image: testdata_image
     container_name: testdata_container
@@ -111,48 +81,79 @@ services:
     depends_on:
       icat_mariadb:
         condition: service_healthy
+
+#  ids_payara:
+#    image: ids_payara_image
+#    container_name: ids_payara_container
+#    build: ids/.
+#    ports:
+#      - "34747:"4848"
+#      - "38181:"8181"
 #
-#  # scigateway-auth:
-#  #   image: scigateway_auth_image
-#  #   container_name: scigateway_auth_container
-#  #   build: scigateway-auth/.
-#  #   ports:
-#  #     - 5010:5010
+#  lucene_payara:
+#    image: lucene_payara_image
+#    container_name: lucene_payara_container
+#    build: lucene/.
+#    ports:
+#      - "44747:4848"
+#      - "48181:8181"
 #
-#  # scigateway:
-#  #   image: scigateway_image
-#  #   container_name: scigateway_container
-#  #   build: scigateway/.
-#  #   ports:
-#  #     - 3000:3000
+#  topcat_payara:
+#    image: topcat_payara_image
+#    container_name: topcat_payara_container
+#    build: topcat/.
+#    ports:
+#      - "54747:4848"
+#      - "58181:8181"
+#    volumes:
+#      - type: bind
+#        source: ./topcat/config/post-boot-commands.asadmin
+#        target: /config/post-boot-commands.asadmin
+#    environment:
+#      - POSTBOOT_COMMANDS=/config/post-boot-commands.asadmin
 #
-#  # datgateway_dataview:
-#  #   image: datgateway_dataview_image
-#  #   container_name: datgateway_dataview_container
-#  #   build: datagateway_plugins/dataview/.
-#  #   ports:
-#  #     - 8081:80
 #
-##  datgateway_download:
-##    image: datgateway_download_image
-##    container_name: datgateway_download_container
-##    build: datagateway_plugins/download/.
-##    ports:
-##      - 8082:80
+#  scigateway-auth:
+#    image: scigateway_auth_image
+#    container_name: scigateway_auth_container
+#    build: scigateway-auth/.
+#    ports:
+#      - "5010:5010"
 #
-#  # datgateway_search:
-#  #   image: datgateway_search_image
-#  #   container_name: datgateway_search_container
-#  #   build: datagateway_plugins/search/.
-#  #   ports:
-#  #     - 8083:80
+#  scigateway:
+#    image: scigateway_image
+#    container_name: scigateway_container
+#    build: scigateway/.
+#    ports:
+#      - "3000:3000"
 #
-#  # datgateway_api:
-#  #   image: datgateway_api_image
-#  #   container_name: datgateway_api_container
-#  #   build: datagateway_api/.
-#  #   depends_on:
-#  #     icat_payara:
-#  #       condition: service_healthy
-#  #   ports:
-#  #     - 5020:5020
+#  datgateway_dataview:
+#    image: datgateway_dataview_image
+#    container_name: datgateway_dataview_container
+#    build: datagateway_plugins/dataview/.
+#    ports:
+#      - "8081:80"
+#
+#  datgateway_download:
+#    image: datgateway_download_image
+#    container_name: datgateway_download_container
+#    build: datagateway_plugins/download/.
+#    ports:
+#    - "8082:80"
+#
+#  datgateway_search:
+#    image: datgateway_search_image
+#    container_name: datgateway_search_container
+#    build: datagateway_plugins/search/.
+#    ports:
+#      - "8083:80"
+#
+#  datgateway_api:
+#    image: datgateway_api_image
+#    container_name: datgateway_api_container
+#    build: datagateway_api/.
+#    depends_on:
+#      icat_payara:
+#        condition: service_healthy
+#    ports:
+#      - "5020:5020"
