@@ -75,6 +75,3 @@ class DoiMinter:
         self.generate_rules("DataPublicationDate", "CRUD")
         self.generate_rules("DataCollectionInvestigation", "CRUD")
         self.generate_rules("DataPublication", "CRUD")
-
-
-
