@@ -52,6 +52,12 @@ affiliations_provider = DynamicProvider(
 )
 faker.add_provider(affiliations_provider)
 
+contributorType_provider = DynamicProvider(
+    provider_name="contributorType",
+    elements=["minter", "creator"],
+)
+faker.add_provider(contributorType_provider)
+
 
 def post_entity(entity):
     """
@@ -750,7 +756,6 @@ class DataPublicationGenerator(Generator):
             1, DataCollectionGenerator.amount - 1,
         )
 
-        #dataPublication.dataPublicationUserID = 1
         dataPublication.dataPublicationUserID = faker.random_int(
             1, DataPublicationUserGenerator.amount - 1,
         )
@@ -770,10 +775,7 @@ class DataPublicationUserGenerator(Generator):
         dataPublicationUser = models.DATAPUBLICATIONUSER()
         apply_common_attributes(dataPublicationUser, i)
 
-        dataPublicationUser.contributorType = "minter"
-
-        #dataPublicationUser.dataPublicationID = 1
-        #dataPublicationUser.userID = 1
+        dataPublicationUser.contributorType = faker.contributorType()
         dataPublicationUser.userID = faker.random_int(
             1, UserGenerator.amount - 1,
         )
@@ -785,7 +787,7 @@ class DataPublicationUserGenerator(Generator):
 
 class AffiliationGenerator(Generator):
     tier = 6
-    amount = 2
+    amount = 5
 
     def generate(self):
         for i in range(1, self.amount):
@@ -796,7 +798,9 @@ class AffiliationGenerator(Generator):
         affiliation = models.AFFILIATION()
         apply_common_attributes(affiliation, i)
         affiliation.name = f"University of {faker.word()}"
-        affiliation.dataPublicationUserID = 1
+        affiliation.dataPublicationUserID = faker.random_int(
+            1, DataPublicationUserGenerator.amount - 1,
+        )
         post_entity(affiliation)
 
 
