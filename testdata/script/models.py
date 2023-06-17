@@ -216,6 +216,95 @@ class APPLICATION(Base, EntityHelper, metaclass=EntityMeta):
     )
 
 
+class AFFILIATION(Base, EntityHelper, metaclass=EntityMeta):
+    __tablename__ = "AFFILIATION"
+    __singularfieldname__ = "affiliation"
+    __pluralfieldname__ = "affiliations"
+    __table_args__ = (Index("UNQ_AFFILIATION_0", "DATAPUBLICATIONUSER_ID", "NAME"),)
+
+    id = Column("ID", BigInteger, primary_key=True)
+    createId = Column("CREATE_ID", String(255), nullable=False)
+    createTime = Column("CREATE_TIME", DateTime, nullable=False)
+    modId = Column("MOD_ID", String(255), nullable=False)
+    modTime = Column("MOD_TIME", DateTime, nullable=False)
+    name = Column("NAME", String(255), nullable=False, unique=True)
+    fullReference = Column("FULLREFERENCE", String(255))
+    pid = Column("PID", String(255))
+    dataPublicationUserID = Column("DATAPUBLICATIONUSER_ID", ForeignKey("DATAPUBLICATIONUSER.ID"), nullable=False)
+
+    DATAPUBLICATIONUSER = relationship(
+        "DATAPUBLICATIONUSER",
+        primaryjoin="AFFILIATION.dataPublicationUserID == DATAPUBLICATIONUSER.id",
+        backref="affiliations",
+    )
+
+
+class DATAPUBLICATIONUSER(Base, EntityHelper, metaclass=EntityMeta):
+    __tablename__ = "DATAPUBLICATIONUSER"
+    __singularfieldname__ = "dataPublicationUser"
+    __pluralfieldname__ = "dataPublicationUsers"
+    __table_args__ = (Index("UNQ_DATAPUBLICATIONUSER_0", "DATAPUBLICATION_ID", "USER_ID", "CONTRIBUTORTYPE"),)
+
+    id = Column("ID", BigInteger, primary_key=True)
+    createId = Column("CREATE_ID", String(255), nullable=False)
+    createTime = Column("CREATE_TIME", DateTime, nullable=False)
+    modId = Column("MOD_ID", String(255), nullable=False)
+    modTime = Column("MOD_TIME", DateTime, nullable=False)
+    email = Column("EMAIL", String(255))
+    contributorType = Column("CONTRIBUTORTYPE", String(255), nullable=False)
+    familyName = Column("FAMILYNAME", String(255))
+    fullName = Column("FULLNAME", String(255))
+    givenName = Column("GIVENNAME", String(255))
+    orderKey = Column("ORDERKEY", String(255))
+
+    dataPublicationID = Column("DATAPUBLICATION_ID", ForeignKey("DATAPUBLICATION.ID"), nullable=False)
+    userID = Column("USER_ID", ForeignKey("USER_.ID"), nullable=False)
+
+    DATAPUBLICATION = relationship(
+        "DATAPUBLICATION",
+        primaryjoin="DATAPUBLICATIONUSER.dataPublicationID == DATAPUBLICATION.id",
+        backref="dataPublicationUsers",
+    )
+    USER = relationship(
+        "USER",
+        primaryjoin="DATAPUBLICATIONUSER.userID == USER.id",
+        backref="dataPublicationUsers",
+    )
+
+
+class DATAPUBLICATION(Base, EntityHelper, metaclass=EntityMeta):
+    __tablename__ = "DATAPUBLICATION"
+    __singularfieldname__ = "dataPublication"
+    __pluralfieldname__ = "dataPublications"
+    __table_args__ = (Index("UNQ_DATAPUBLICATION_0", "DATACOLLECTION_ID", "FACILITY_ID", "TITLE", "PID"),)
+
+    id = Column("ID", BigInteger, primary_key=True)
+    createId = Column("CREATE_ID", String(255), nullable=False)
+    createTime = Column("CREATE_TIME", DateTime, nullable=False)
+    modId = Column("MOD_ID", String(255), nullable=False)
+    modTime = Column("MOD_TIME", DateTime, nullable=False)
+    title = Column("TITLE", String(255), nullable=False)
+    publicationDate = Column("PUBLICATIONDATE", DateTime)
+    description = Column("DESCRIPTION", String(4000))
+    pid = Column("PID", String(255), nullable=False)
+    subject = Column("SUBJECT", String(1024))
+
+    dataCollectionID = Column("DATACOLLECTION_ID", ForeignKey("DATACOLLECTION.ID"), nullable=False)
+    facilityID = Column("FACILITY_ID", ForeignKey("FACILITY.ID"), nullable=False)
+
+    FACILITY = relationship(
+        "FACILITY",
+        primaryjoin="DATAPUBLICATION.facilityID == FACILITY.id",
+        backref="dataPublications",
+    )
+
+    DATACOLLECTION = relationship(
+        "DATACOLLECTION",
+        primaryjoin="DATAPUBLICATION.dataCollectionID == DATACOLLECTION.id",
+        backref="dataPublications",
+    )
+
+
 class FACILITY(Base, EntityHelper, metaclass=EntityMeta):
     __tablename__ = "FACILITY"
     __singularfieldname__ = "facility"
@@ -1183,6 +1272,7 @@ class USER(Base, EntityHelper, metaclass=EntityMeta):
     fullName = Column("FULLNAME", String(255))
     modId = Column("MOD_ID", String(255), nullable=False)
     modTime = Column("MOD_TIME", DateTime, nullable=False)
+    affiliation = Column("AFFILIATION", String(255), nullable=False)
     name = Column("NAME", String(255), nullable=False, unique=True)
     orcidId = Column("ORCIDID", String(255))
 

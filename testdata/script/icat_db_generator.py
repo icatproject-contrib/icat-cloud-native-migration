@@ -35,7 +35,6 @@ YEARS = args.years  # 4 Cycles per years generated
 faker = Faker()
 Faker.seed(SEED)
 
-
 engine = create_engine(
     config.get_config_value(APIConfigOptions.DB_URL),
     poolclass=QueuePool,
@@ -44,6 +43,14 @@ engine = create_engine(
 )
 session_factory = sessionmaker(engine)
 session = scoped_session(session_factory)()
+
+from faker.providers import DynamicProvider
+
+affiliations_provider = DynamicProvider(
+    provider_name="university",
+    elements=["University Of Oxford", "University Of Cambridge"],
+)
+faker.add_provider(affiliations_provider)
 
 
 def post_entity(entity):
@@ -89,6 +96,7 @@ def apply_common_attributes(entity, iterator):
     entity.createId = "user"
     entity.modId = "user"
     entity.modTime = get_date_time()
+    entity.affiliation = faker.university()
     entity.createTime = get_date_time()
     entity.name = f"{entity.__tablename__} {iterator}"
     entity.description = faker.text()
@@ -137,6 +145,7 @@ class FacilityGenerator(Generator):
         facility.description = "Lorem ipsum light source"
         facility.name = "LILS"
         post_entity(facility)
+
 
 
 class DataCollectionGenerator(Generator):
@@ -211,7 +220,6 @@ class SampleTypeGenerator(Generator):
     amount = 80
 
     def generate(self):
-
         for i in range(1, self.amount):
             SampleTypeGenerator.generate_sample_type(i)
 
@@ -722,6 +730,67 @@ class DatafileParameterGenerator(Generator):
         post_entity(datafile_param)
 
 
+class DataPublicationGenerator(Generator):
+    tier = 1
+    amount = 3
+
+    def generate(self):
+        for i in range(1, self.amount):
+            DataPublicationGenerator.generate_data_publications(i)
+
+    @staticmethod
+    def generate_data_publications(i):
+        dataPublication = models.DATAPUBLICATION()
+        apply_common_attributes(dataPublication, i)
+
+        dataPublication.title = faker.text()
+        dataPublication.pid = faker.random_int()
+
+        dataPublication.dataCollectionID = faker.random_int(
+            1, DataCollectionGenerator.amount - 1,
+        )
+
+        dataPublication.dataPublicationUserID = 1
+        post_entity(dataPublication)
+
+
+class DataPublicationUserGenerator(Generator):
+    tier = 2
+    amount = 2
+
+    def generate(self):
+        for i in range(1, self.amount):
+            DataPublicationUserGenerator.generate_publication_users(i)
+
+    @staticmethod
+    def generate_publication_users(i):
+        dataPublicationUser = models.DATAPUBLICATIONUSER()
+        apply_common_attributes(dataPublicationUser, i)
+
+        dataPublicationUser.contributorType = "minter"
+
+        dataPublicationUser.dataPublicationID = 1
+        dataPublicationUser.userID = 1
+        post_entity(dataPublicationUser)
+
+
+class AffiliationGenerator(Generator):
+    tier = 3
+    amount = 2
+
+    def generate(self):
+        for i in range(1, self.amount):
+            AffiliationGenerator.generate_affiliations(i)
+
+    @staticmethod
+    def generate_affiliations(i):
+        affiliation = models.AFFILIATION()
+        apply_common_attributes(affiliation, i)
+        affiliation.name = f"University of {faker.word()}"
+        affiliation.dataPublicationUserID = 1
+        post_entity(affiliation)
+
+
 def generate_all(i, generators):
     processes = []
     for generator in generators:
@@ -752,6 +821,7 @@ def main():
     print("Adding specific testing data")
     doi = doiminter.DoiMinter()
     doi.add_specific_entries()
+
 
 if __name__ == "__main__":
     main()

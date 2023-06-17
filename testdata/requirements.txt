@@ -1,4 +1,4 @@
-Faker==9.2.0
+Faker==14.2.1
 SQLAlchemy==1.4.25
 suds-jurko==0.6
 requests==2.21.0
