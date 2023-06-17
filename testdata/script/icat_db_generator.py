@@ -731,8 +731,8 @@ class DatafileParameterGenerator(Generator):
 
 
 class DataPublicationGenerator(Generator):
-    tier = 1
-    amount = 3
+    tier = 4
+    amount = 20
 
     def generate(self):
         for i in range(1, self.amount):
@@ -750,13 +750,16 @@ class DataPublicationGenerator(Generator):
             1, DataCollectionGenerator.amount - 1,
         )
 
-        dataPublication.dataPublicationUserID = 1
+        #dataPublication.dataPublicationUserID = 1
+        dataPublication.dataPublicationUserID = faker.random_int(
+            1, DataPublicationUserGenerator.amount - 1,
+        )
         post_entity(dataPublication)
 
 
 class DataPublicationUserGenerator(Generator):
-    tier = 2
-    amount = 2
+    tier = 5
+    amount = 10
 
     def generate(self):
         for i in range(1, self.amount):
@@ -769,13 +772,19 @@ class DataPublicationUserGenerator(Generator):
 
         dataPublicationUser.contributorType = "minter"
 
-        dataPublicationUser.dataPublicationID = 1
-        dataPublicationUser.userID = 1
+        #dataPublicationUser.dataPublicationID = 1
+        #dataPublicationUser.userID = 1
+        dataPublicationUser.userID = faker.random_int(
+            1, UserGenerator.amount - 1,
+        )
+        dataPublicationUser.dataPublicationID = faker.random_int(
+            1, DataPublicationGenerator.amount - 1,
+        )
         post_entity(dataPublicationUser)
 
 
 class AffiliationGenerator(Generator):
-    tier = 3
+    tier = 6
     amount = 2
 
     def generate(self):
