@@ -46,9 +46,15 @@ session = scoped_session(session_factory)()
 
 from faker.providers import DynamicProvider
 
+user_affiliations_provider = DynamicProvider(
+    provider_name="user_university",
+    elements=["University Of Oxford", "University Of Cambridge"],
+)
+faker.add_provider(user_affiliations_provider)
+
 affiliations_provider = DynamicProvider(
     provider_name="university",
-    elements=["University Of Oxford", "University Of Cambridge"],
+    elements=["University Of Oxford", f"University Of {faker.word()}"],
 )
 faker.add_provider(affiliations_provider)
 
@@ -102,7 +108,7 @@ def apply_common_attributes(entity, iterator):
     entity.createId = "user"
     entity.modId = "user"
     entity.modTime = get_date_time()
-    entity.affiliation = faker.university()
+    entity.affiliation = faker.user_university()
     entity.createTime = get_date_time()
     entity.name = f"{entity.__tablename__} {iterator}"
     entity.description = faker.text()
@@ -797,7 +803,7 @@ class AffiliationGenerator(Generator):
     def generate_affiliations(i):
         affiliation = models.AFFILIATION()
         apply_common_attributes(affiliation, i)
-        affiliation.name = f"University of {faker.word()}"
+        affiliation.name = faker.university()
         affiliation.dataPublicationUserID = faker.random_int(
             1, DataPublicationUserGenerator.amount - 1,
         )
