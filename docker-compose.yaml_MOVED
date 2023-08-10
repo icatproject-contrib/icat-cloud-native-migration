@@ -148,12 +148,12 @@ services:
 #    ports:
 #      - "8083:80"
 #
- datgateway_api:
-   image: datgateway_api_image
-   container_name: datgateway_api_container
-   build: datagateway_api/.
-   depends_on:
-     icat_payara:
-       condition: service_healthy
-   ports:
-     - "5020:5020"
+#  datgateway_api:
+#    image: datgateway_api_image
+#    container_name: datgateway_api_container
+#    build: datagateway_api/.
+#    depends_on:
+#      icat_payara:
+#        condition: service_healthy
+#    ports:
+#      - "5020:5020"

@@ -1,0 +1,21 @@
+---
+datagateway_api:
+  extension: "/"
+  backend: "python_icat"
+  client_cache_size: 5
+  client_pool_init_size: 2
+  client_pool_max_size: 5
+  db_url: "mysql+pymysql://icatdbuser:icatdbuserpw@localhost:3306/icatdb"
+  icat_url: "http://icat_payara_container:8080"
+  icat_check_cert: false
+flask_reloader: false
+log_level: "WARN"
+log_location: "datagateway_api/logs.log"
+debug_mode: false
+generate_swagger: false
+host: "0.0.0.0"
+port: "5020"
+test_user_credentials: { username: "root", password: "pw" }
+test_mechanism: "simple"
+url_prefix: "/"
+
