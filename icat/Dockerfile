@@ -5,10 +5,10 @@
 # is needed for icat to connect to the auth service.
 
 # Based on JDK8, also an option for JDK11
-FROM payara/server-full:5.2021.7
+FROM payara/server-full:5.2022.5
 
 # Define variables to use later on in this dockerfile. 
-ARG ICAT_VERSION=5.0.0
+ARG ICAT_VERSION=5.0.1
 ARG SQL_CONNECTOR_VERSION=mysql-connector-java-8.0.26.jar
 ARG SQL_CONNECTOR_URL=https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.26/$SQL_CONNECTOR_VERSION
 ARG DATASOURCE_CLASSNAME=com.mysql.cj.jdbc.MysqlDataSource

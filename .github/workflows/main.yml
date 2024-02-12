@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  Integration_Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.HARBOR_URL }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+      - name: Build and push authentication
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          context: ./authentication
+          tags: ${{ secrets.HARBOR_URL }}/icat_auth:latest
+
+      - name: Build and push icat
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          context: ./icat
+          tags: ${{ secrets.HARBOR_URL }}/icat_5:latest
+
+      - name: Build and push testdata
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          context: ./testdata
+          tags: ${{ secrets.HARBOR_URL }}/icat_testdata:latest
