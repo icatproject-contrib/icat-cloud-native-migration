@@ -6,7 +6,7 @@
 FROM payara/server-full:5.2022.5
 
 # Define variables to use later on in this dockerfile. 
-ARG AUTH_VERSION=3.0.0
+ARG AUTH_VERSION=2.0.1
 
 # Download the contents of the auth plugin into the servers deployment directory.
 ADD https://repo.icatproject.org/repo/org/icatproject/authn.simple/$AUTH_VERSION/authn.simple-$AUTH_VERSION-distro.zip $DEPLOY_DIR/
