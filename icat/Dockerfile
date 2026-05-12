@@ -4,11 +4,10 @@
 # containers. The run.properties contains the name of the auth container which 
 # is needed for icat to connect to the auth service.
 
-# Based on JDK8, also an option for JDK11
-FROM payara/server-full:5.2022.5
+FROM payara/server-full:7.2026.4-jdk25@sha256:1ffb8bdb4e815074f429a0ba8addaacf3b2fd6d3391b984a8695f2c9ac1e70c2
 
 # Define variables to use later on in this dockerfile. 
-ARG ICAT_VERSION=5.0.1
+ARG ICAT_VERSION=6.2.0
 ARG SQL_CONNECTOR_VERSION=mysql-connector-java-8.0.26.jar
 ARG SQL_CONNECTOR_URL=https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.26/$SQL_CONNECTOR_VERSION
 ARG DATASOURCE_CLASSNAME=com.mysql.cj.jdbc.MysqlDataSource
@@ -67,8 +66,8 @@ RUN ${PAYARA_DIR}/bin/asadmin --user=${ADMIN_USER} --passwordfile=${PASSWORD_FIL
     && ${PAYARA_DIR}/bin/asadmin --user=${ADMIN_USER} --passwordfile=${PASSWORD_FILE} add-library $PAYARA_DIR/glassfish/domains/domain1/lib/ext/$SQL_CONNECTOR_VERSION \
     && ${PAYARA_DIR}/bin/asadmin --user=${ADMIN_USER} --passwordfile=${PASSWORD_FILE} create-jdbc-connection-pool --ping=true --steadyPoolSize=2 --datasourceClassname=$DATASOURCE_CLASSNAME --resType=javax.sql.DataSource --maxPoolSize=32 icat \
     && ${PAYARA_DIR}/bin/asadmin --user=${ADMIN_USER} --passwordfile=${PASSWORD_FILE} create-jdbc-resource --connectionpoolid icat jdbc/icat \
-    && ${PAYARA_DIR}/bin/asadmin --user=${ADMIN_USER} --passwordfile=${PASSWORD_FILE} create-jms-resource --restype javax.jms.Topic jms/ICAT/Topic \
-    && ${PAYARA_DIR}/bin/asadmin --user=${ADMIN_USER} --passwordfile=${PASSWORD_FILE} create-jms-resource --restype javax.jms.Topic jms/ICAT/log \
+    && ${PAYARA_DIR}/bin/asadmin --user=${ADMIN_USER} --passwordfile=${PASSWORD_FILE} create-jms-resource --restype jakarta.jms.Topic jms/ICAT/Topic \
+    && ${PAYARA_DIR}/bin/asadmin --user=${ADMIN_USER} --passwordfile=${PASSWORD_FILE} create-jms-resource --restype jakarta.jms.Topic jms/ICAT/log \
     && ${PAYARA_DIR}/bin/asadmin --user=${ADMIN_USER} --passwordfile=${PASSWORD_FILE} stop-domain ${DOMAIN_NAME} 
     
 WORKDIR $HOME_DIR
