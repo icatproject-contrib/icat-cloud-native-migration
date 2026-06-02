@@ -31,7 +31,7 @@ jobs:
         with:
           push: true
           context: ./icat
-          tags: ${{ secrets.HARBOR_URL }}/icat_5:latest
+          tags: ${{ secrets.HARBOR_URL }}/icat_6:latest
 
       - name: Build and push testdata
         uses: docker/build-push-action@v5

@@ -5,6 +5,78 @@
 	<persistence-unit name="icat" transaction-type="JTA">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<jta-data-source>jdbc/icat</jta-data-source>
+		<class>org.icatproject.core.entity.Affiliation</class>
+		<class>org.icatproject.core.entity.Application</class>
+		<class>org.icatproject.core.entity.DataCollectionDatafile</class>
+		<class>org.icatproject.core.entity.DataCollectionDataset</class>
+		<class>org.icatproject.core.entity.DataCollectionInvestigation</class>
+		<class>org.icatproject.core.entity.DataCollection</class>
+		<class>org.icatproject.core.entity.DataCollectionParameter</class>
+		<class>org.icatproject.core.entity.DatafileFormat</class>
+		<class>org.icatproject.core.entity.Datafile</class>
+		<class>org.icatproject.core.entity.DatafileParameter</class>
+		<class>org.icatproject.core.entity.DataPublicationDate</class>
+		<class>org.icatproject.core.entity.DataPublicationFunding</class>
+		<class>org.icatproject.core.entity.DataPublication</class>
+		<class>org.icatproject.core.entity.DataPublicationType</class>
+		<class>org.icatproject.core.entity.DataPublicationUser</class>
+		<class>org.icatproject.core.entity.DatasetInstrument</class>
+		<class>org.icatproject.core.entity.Dataset</class>
+		<class>org.icatproject.core.entity.DatasetParameter</class>
+		<class>org.icatproject.core.entity.DatasetTechnique</class>
+		<class>org.icatproject.core.entity.DatasetType</class>
+		<class>org.icatproject.core.entity.FacilityCycle</class>
+		<class>org.icatproject.core.entity.Facility</class>
+		<class>org.icatproject.core.entity.FundingReference</class>
+		<class>org.icatproject.core.entity.Grouping</class>
+		<class>org.icatproject.core.entity.Instrument</class>
+		<class>org.icatproject.core.entity.InstrumentScientist</class>
+		<class>org.icatproject.core.entity.InvestigationFacilityCycle</class>
+		<class>org.icatproject.core.entity.InvestigationFunding</class>
+		<class>org.icatproject.core.entity.InvestigationGroup</class>
+		<class>org.icatproject.core.entity.InvestigationInstrument</class>
+		<class>org.icatproject.core.entity.Investigation</class>
+		<class>org.icatproject.core.entity.InvestigationParameter</class>
+		<class>org.icatproject.core.entity.InvestigationType</class>
+		<class>org.icatproject.core.entity.InvestigationUser</class>
+		<class>org.icatproject.core.entity.Job</class>
+		<class>org.icatproject.core.entity.Keyword</class>
+		<class>org.icatproject.core.entity.Parameter</class>
+		<class>org.icatproject.core.entity.ParameterType</class>
+		<class>org.icatproject.core.entity.PermissibleStringValue</class>
+		<class>org.icatproject.core.entity.Publication</class>
+		<class>org.icatproject.core.entity.PublicStep</class>
+		<class>org.icatproject.core.entity.RelatedDatafile</class>
+		<class>org.icatproject.core.entity.RelatedItem</class>
+		<class>org.icatproject.core.entity.Rule</class>
+		<class>org.icatproject.core.entity.Sample</class>
+		<class>org.icatproject.core.entity.SampleParameter</class>
+		<class>org.icatproject.core.entity.SampleType</class>
+		<class>org.icatproject.core.entity.Shift</class>
+		<class>org.icatproject.core.entity.StudyInvestigation</class>
+		<class>org.icatproject.core.entity.Study</class>
+		<class>org.icatproject.core.entity.Subject</class>
+		<class>org.icatproject.core.entity.Technique</class>
+		<class>org.icatproject.core.entity.UserGroup</class>
+		<class>org.icatproject.core.entity.User</class>
+		<exclude-unlisted-classes />
+		<properties>
+			<property name="eclipselink.cache.shared.default" value="false"/>
+			<property name="eclipselink.logging.level" value="OFF"/>
+			<property name="eclipselink.logging.level.sql" value="OFF"/>
+			<property name="eclipselink.logging.parameters" value="false"/>
+			<property name="eclipselink.ddl-generation" value="create-tables"/>
+			<property name="eclipselink.ddl-generation.output_mode" value="both"/>
+			<property name="eclipselink.deploy-on-startup" value="true"/>
+			<property name="eclipselink.target-server" value="Glassfish"/>
+			<property name="eclipselink.target-database" value="MySQL"/>
+		</properties>
+	</persistence-unit>
+	<persistence-unit name="session" transaction-type="JTA">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<jta-data-source>jdbc/icat</jta-data-source>
+		<class>org.icatproject.core.entity.Session</class>
+		<exclude-unlisted-classes />
 		<properties>
 			<property name="eclipselink.cache.shared.default" value="false"/>
 			<property name="eclipselink.logging.level" value="OFF"/>
