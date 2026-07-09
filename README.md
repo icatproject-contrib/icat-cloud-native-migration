@@ -74,15 +74,25 @@ Once running, the container can logged into by either:
 
 - the version can be checked by going to https://localhost:18181/icat/version
 
-### Authentication container
+### Simple Authentication container
 
 Once running, the container can logged into by either:
 
 - using the Payara UI tool at https://localhost:24747/ using **username/password: admin/admin**
 
-- running `docker exec -it auth_payara_container bash` where `auth_payara_container` is the name of the running container.
+- running `docker exec -it auth_simple_container bash` where `auth_simple_container` is the name of the running container.
 
-- the version can be checked by going to https://localhost:28181/authn.simple/version/ and https://localhost:28181/authn.anon/version/
+- the version can be checked by going to https://localhost:28181/authn.simple/version/
+
+### Anonymous Authentication container
+
+Once running, the container can logged into by either:
+
+- using the Payara UI tool at https://localhost:25747/ using **username/password: admin/admin**
+
+- running `docker exec -it auth_anon_container bash` where `auth_anon_container` is the name of the running container.
+
+- the version can be checked by going to https://localhost:29181/authn.anon/version/
 
 ### IDS container
 
@@ -150,7 +160,8 @@ A separate container has been created to assist in adding some test data to be a
 Due to the various inter-dependancies, the following containers are needed In order to get a minimal icat stack up and running:
 
 - Icat.server
-- Authenticator
+- Simple Authenticator
+- Anonymous Authenticator
 - IDS
 - Icat Maria db
 
@@ -174,21 +185,22 @@ The table below shows how the various components of icat can be accessed both in
 
 :information_source: Scigateway and Topcat are currently only accessible through Google Chrome.
 
-| Service                    | Internal URL                                | Payara Admin URL         | App URL                                                                                    |
-| :------------------------- | ------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------ |
-| ICAT server                | http://icat_payara_container:8080           | https://localhost:14747/ | https://localhost:18181/icat/version                                                       |
-| Auth Service               | http://auth_payara_container:8080           | https://localhost:24747/ | https://localhost:28181/authn.simple/version/, https://localhost:28181/authn.anon/version/ |
-| IDS Service                | http://ids_payara_container:8080            | https://localhost:34747/ | https://localhost:38181/ids/version/                                                       |
-| Lucene Service             | http://lucene_payara_container:8080         | https://localhost:44747/ | https://localhost:48181/icat.lucene/version                                                |
-| Topcat                     | Not used                                    | https://localhost:54747/ | https://localhost:58181/                                                                   |
-| ICAT server database       | http://icat_mariadb_container:3306/icatdb   | https://localhost:3306/  |                                                                                            |
-| Topcat database            | http://topcat_mariadb_container:3306/topcat | https://localhost:2306/  |                                                                                            |
-| Scigateway                 | Not used                                    | Not used                 | http://localhost:3000/                                                                     |
-| Scigateway Auth            | Not used                                    | Not used                 | http://localhost:5010/authenticators/                                                      |
-| Datgateway Dataview Plugin | Not used                                    | Not used                 | http://localhost:8081/main.js                                                              |
-| Datgateway Download Plugin | Not used                                    | Not used                 | http://localhost:8082/main.js                                                              |
-| Datgateway Search Plugin   | Not used                                    | Not used                 | http://localhost:8083/main.js                                                              |
-| Datgateway API             | Not used                                    | Not used                 | http://localhost:5020/ping/                                                                |
+| Service                    | Internal URL                                | Payara Admin URL         | App URL                                       |
+| :------------------------- | ------------------------------------------- | ------------------------ | --------------------------------------------- |
+| ICAT server                | http://icat_payara_container:8080           | https://localhost:14747/ | https://localhost:18181/icat/version          |
+| Simple Auth Service        | http://auth_simple_container:8080           | https://localhost:24747/ | https://localhost:28181/authn.simple/version/ |
+| Anonymous Auth Service     | http://auth_anon_container:8080             | https://localhost:25747/ | https://localhost:29181/authn.anon/version/   |
+| IDS Service                | http://ids_payara_container:8080            | https://localhost:34747/ | https://localhost:38181/ids/version/          |
+| Lucene Service             | http://lucene_payara_container:8080         | https://localhost:44747/ | https://localhost:48181/icat.lucene/version   |
+| Topcat                     | Not used                                    | https://localhost:54747/ | https://localhost:58181/                      |
+| ICAT server database       | http://icat_mariadb_container:3306/icatdb   | https://localhost:3306/  |                                               |
+| Topcat database            | http://topcat_mariadb_container:3306/topcat | https://localhost:2306/  |                                               |
+| Scigateway                 | Not used                                    | Not used                 | http://localhost:3000/                        |
+| Scigateway Auth            | Not used                                    | Not used                 | http://localhost:5010/authenticators/         |
+| Datgateway Dataview Plugin | Not used                                    | Not used                 | http://localhost:8081/main.js                 |
+| Datgateway Download Plugin | Not used                                    | Not used                 | http://localhost:8082/main.js                 |
+| Datgateway Search Plugin   | Not used                                    | Not used                 | http://localhost:8083/main.js                 |
+| Datgateway API             | Not used                                    | Not used                 | http://localhost:5020/ping/                   |
 
 ## The different configuration options
 
@@ -212,10 +224,10 @@ This might be handy to debug any connection problems. For example; if we wanted 
 
   `docker exec -t -i scigateway_container /bin/sh` for a node container
 
-- Get the version of the auth service:
-  - `curl -k https://auth_payara_container:8181/authn.simple/version/`
-  - `curl -k https://auth_payara_container:8181/authn.anon/version/`
+- Get the version of the auth services:
+  - `curl -k https://auth_simple_container:8181/authn.simple/version/`
+  - `curl -k https://auth_anon_container:8181/authn.anon/version/`
 
   or
-  - `curl http://auth_payara_container:8080/authn.simple/version/`
-  - `curl http://auth_payara_container:8080/authn.anon/version/`
+  - `curl http://auth_simple_container:8080/authn.simple/version/`
+  - `curl http://auth_anon_container:8080/authn.anon/version/`

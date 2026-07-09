@@ -2,7 +2,7 @@
 
 [TOC]
 
-This document will hold my development notes whilst working on migration of the ICAT application from one big centos7 image, to multiple smaller micro-services. 
+This document will hold my development notes whilst working on migration of the ICAT application from one big centos7 image, to multiple smaller micro-services.
 
 It is a work in progress and will evolve over time.
 
@@ -20,19 +20,19 @@ It is a work in progress and will evolve over time.
 - Here's an example docker-compose file from the NID in DAFNI, that sets up Postgres database to work with, accessible on localhost on port 5003
 
 ```yaml
-version: '3.5'
+version: "3.5"
 
 services:
   nidpostgres:
     restart: always
     image: postgres:11
     container_name: nidpostgres
-    ports: 
+    ports:
       - "5003:5432"
     environment:
-        POSTGRES_PASSWORD: password
-        POSTGRES_USER: nidpostgres
-        POSTGRES_DB: nid
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: nidpostgres
+      POSTGRES_DB: nid
 ```
 
 - It also allows you to run a docker file for code that **you're developing locally** in the same list.
@@ -42,21 +42,19 @@ services:
 - NOTE: the `build: .` refers to a `Dockerfile` which is based on a python3 image.
 
 ```yaml
-  nid:
-     restart: always
-     build: .
-     image: nid
-     depends_on:
-       - nidpostgres
-     container_name: nid
-     ports:
-       - "5000:5000"
-     environment:
-       DATABASE_HOST: 'nidpostgres'
-       DEBUG: "True"
+nid:
+  restart: always
+  build: .
+  image: nid
+  depends_on:
+    - nidpostgres
+  container_name: nid
+  ports:
+    - "5000:5000"
+  environment:
+    DATABASE_HOST: "nidpostgres"
+    DEBUG: "True"
 ```
-
-
 
 ### Images VS Containers
 
@@ -77,14 +75,13 @@ The line between image configuration and container config is blurred, mainly dow
   - manage our own custom docker repo to store any custom base images to pull / push images from. We could probably make do with the publicly available one for the time being , if there are no safety concerns.
   - These images could be pulled to create containers which would be used with the Jenkins Continuous Integration Environments, like staging (pre-prod) and prod etc
   - In the long run, Kubernetes would be needed to manage the containers in these environments.
-- Whist following the tutorial, it looks like each image may have a fair bit of configuration applied to it. 
-- Need to figure out the grand plan of how these containers fit into the CI environment, here is Stuarts doc that explains most of that: 
+- Whist following the tutorial, it looks like each image may have a fair bit of configuration applied to it.
+- Need to figure out the grand plan of how these containers fit into the CI environment, here is Stuarts doc that explains most of that:
   - https://hackmd.io/iWsy-NYCToOYP-J7wdtdrQ?view
 
 ## :arrow_right: Architectural Overview
 
 <img src="/Users/alexkemp/Developement/icat/backup/03.12.21/gitLab/icat-cloud-native-migration/documentation/images/icat cloud native architecture.png" width="920px" />
-
 
 ## :arrow_right: Work plan
 
@@ -94,21 +91,17 @@ The line between image configuration and container config is blurred, mainly dow
 - [x] Look into containerising auth plugin
 - [x] Look into containerising the IDS?
 - [ ] Look into containerising the Lucene component
-- [x] Look at docker-composing the lot together 
+- [x] Look at docker-composing the lot together
 - [ ] Topcat
 - [ ] Get ICAT code, build and run locally against containers
-
-
 
 ## :arrow_right: Docker files vs docker-compose
 
 - Going to get containers working out of Dockerfiles. This makes more sense as any deployment will need docker files rather than a docker-compose file. docker-compose is mainly used to get systems up and running locally.
-- Plus, some operations like copying content into the container can only be done in dockerfiles: 
+- Plus, some operations like copying content into the container can only be done in dockerfiles:
   `COPY x Y`
 - Environment variables can be passed in, in docker files, by using `ENV` keyword; for example:
   `ENV MARIADB_DATABASE icatdb`
-
-
 
 ## :arrow_right: MariaDB
 
@@ -120,8 +113,6 @@ The line between image configuration and container config is blurred, mainly dow
 - `mysql_secure_installation` will need to be automated if really needed, for now I think its fine as I'm working on local deployment. Plus prod is a managed database? Use `expect` if needed.
 - New users created in docker file are given domain `@localhost` by default
 - Connecting to mariadb in container using: `mysql -h 0.0.0.0 -P 3307 --protocol=TCP -u root -p` from docker host machine (my Mac).
-
-
 
 ## :arrow_right: Payara
 
@@ -143,26 +134,24 @@ The line between image configuration and container config is blurred, mainly dow
 - The .asadmin file can be loaded into docker as a **pre-boot** configuration file. Setting it as a **post-boot** config means the server needs restarting which we can't do.
 - List of `list-vm-options` discrepancies (excel spreadsheet [here](./list-jvm-options.xlsx)), But basically:
   - **In Local Vagrant but NOT in container**, i.e: potential to add to container:
-    - `-XX:MaxPermSize192m` 
+    - `-XX:MaxPermSize192m`
     - `-client`
     - `-Djdbc.driversorg.apache.derby.jdbc.ClientDriver`
     - `-Xmx365m`
     - `-XX:OnOutOfMemoryError"kill -9 %p"`
-  - **In container but NOT in local Vagrant set up** (of significance),  i.e: potential to remove:
+  - **In container but NOT in local Vagrant set up** (of significance), i.e: potential to remove:
     - `-Dorg.glassfish.grizzly.nio.DefaultSelectorHandler.force-selector-spin-detection=TRUE`
     - `-Xbootclasspath/a:${com.sun.aas.installRoot}/lib/grizzly-npn-api.jar   --> JDK versions: min(1.8.0.251)`
     - `-XX:MaxRAMPercentage=${ENV=MEM_MAX_RAM_PERCENTAGE}`
     - `-Xss${ENV=MEM_XSS}`
     - `-Djdbc.drivers=org.h2.Driver`
     - `-server`
-- replacing `-XX:OnOutOfMemoryError="kill -9 %p"` with `-XX:+ExitOnOutOfMemoryError` 
+- replacing `-XX:OnOutOfMemoryError="kill -9 %p"` with `-XX:+ExitOnOutOfMemoryError`
   - The app won't need restarting, just exit and let docker restart on failure `--restart unless-stopped`
   - Needs testing
-- I think the `-Djdbc.driversorg.apache.derby.jdbc.ClientDriver` option along with the connection pool to mariadb get set up in the icat application installation 
+- I think the `-Djdbc.driversorg.apache.derby.jdbc.ClientDriver` option along with the connection pool to mariadb get set up in the icat application installation
 - `MaxPermSize` is ignored in JDK8; [here](https://stackoverflow.com/questions/33915849/java-8-outofmemory-error-change-maxpermsize)
 - `XMX` option: `+UseContainerSupport` (enabled by default) allows The JVM to calculate its memory based on The memory allocated to The container so nothing to do there.
-
-
 
 ## :arrow_right: Running ICAT inside Payara
 
@@ -172,7 +161,7 @@ The line between image configuration and container config is blurred, mainly dow
 - Using `jar -xvf ....` instead of installing `unzip` which saves loading time
 - Only root can do this however so having to switch user in docker file
 - Going to copy in icat config files locally (meeting with Stuart), the rest will be pulled from online repo
-- Log path needs to be changed as presumably paths changed changed in payara 5 
+- Log path needs to be changed as presumably paths changed changed in payara 5
 - The divide of **what to put in image** config and **what to put in container start up**:
   - Putting as much config in the image is best as this will allow containers to boot quicker
   - Putting config into the container should only be done where the containers need to be different but based on the same image.
@@ -188,16 +177,16 @@ Ideally we'd set up the payara image with everything it needs to run and build i
 - Creating a custom entry point script defined in the image file
 - Entry point script would call python set up and use config shared in volume mount
 
-**However**, the issue with this is that the payara and docker have a specific start up sequence. Payara defines an ENTRYPOINT for containers to start so we'd need to define our own, which would run a setup script before calling the normal entry point. This isn't working with some kind of threading errors probably because payaras' entry point is called with a framework called [tini](https://docs.payara.fish/community/docs/documentation/ecosystem/docker-images/server-image-overview.html#default-entrypoint). 
+**However**, the issue with this is that the payara and docker have a specific start up sequence. Payara defines an ENTRYPOINT for containers to start so we'd need to define our own, which would run a setup script before calling the normal entry point. This isn't working with some kind of threading errors probably because payaras' entry point is called with a framework called [tini](https://docs.payara.fish/community/docs/documentation/ecosystem/docker-images/server-image-overview.html#default-entrypoint).
 
-#### Using the INIT_ method
+#### Using the INIT\_ method
 
-Payara allows for customs bash scripts to be ran on start up. 
+Payara allows for customs bash scripts to be ran on start up.
 
 - Write a bash script that called the python script
 - Std output is disabled for this so would need to log to log file
 
-**However**,  all output is hidden and not sent to stdout so it makes dev hard.
+**However**, all output is hidden and not sent to stdout so it makes dev hard.
 
 For this reason we'll copy the all the configuration over and run the setup scripts on image build.
 
@@ -216,27 +205,20 @@ For this reason we'll copy the all the configuration over and run the setup scri
 #### How to run, or provide the same setup that the python script provides?
 
 1. Run the python set up script
-
    - Run at image build time:
-
      - :skull_and_crossbones: Failing due to `asadmin` permissions in the script. It seems that all `asadmin` commands in user space need credentials which the script doesn't give. The script can't run: `/opt/payara/appserver/bin/asadmin --port 4848 get property.administrative.domain.name`
 
        This is because the [setup glass fish script](https://github.com/icatproject/icat.utils/blob/4f4d907e431202aa73d5dc796c19918b73bba8f7/src/main/scripts/setup-glassfish.py#L104) uses `--savelogin` so we don't need it later on. It does this when it creates the domain, something that we don't do in the docker image. The payara docker container comes with domain1 pre-created
 
      - Run as a $POSTBOOT step:
-
        - :skull_and_crossbones: Can't do this because all pre and post boot commands are means for asadmin commands, not running python scripts
 
-     - Run as a init_.sh file
-
+     - Run as a init\_.sh file
        - :skull_and_crossbones: There doesn't seem to be any std output for commands ran this way
-
-         
 
 2. Re-write the python script in bash so it can be applied on startup.
 
 3. Edit & Run the setup script manually once the container has started, save the image on docker hub, allowing people to pull it down:
-
    - Still have same permission issues as above
    - Besides, this has the following drawbacks:
      - Raulfs docker images are completely custom where he installs opensuse and goes from there
@@ -248,14 +230,14 @@ For this reason we'll copy the all the configuration over and run the setup scri
 
 So Based on this we have options:
 
-1) Doctor the set up script so that it works on startup
+1. Doctor the set up script so that it works on startup
    - **Pros**: Least architectural change.
    - **Cons**: This will mean that that the updated python script will need to cater for the docker setup (probably by passing it a flag or something) and the normal installation process. This will probably involve a fair bit of testing as all the existing installation process may need to be tested again.
-2) Create a new setup script dedicated to docker 
+2. Create a new setup script dedicated to docker
    - **Pros**: easy to do
    - **Cons**: code bloat, still need to install python to do file manipulation.
-3) Rewrite the setup in bash: :thumbsup: :thumbsup: :thumbsup: :thumbsup:
-   - **Pros**: lean and dedicated setup script without all the unnecessary error checking with doesn't apply to the docker container 
+3. Rewrite the setup in bash: :thumbsup: :thumbsup: :thumbsup: :thumbsup:
+   - **Pros**: lean and dedicated setup script without all the unnecessary error checking with doesn't apply to the docker container
    - **Cons**: The script contains a load of file changing which would be difficult in bash so for now we'll hold a local copy of the files pre-changed and copy them over, into the image.
 
 ### What the set-up script does
@@ -290,10 +272,9 @@ So Based on this we have options:
 ### Connection to mariaDB from Payara
 
 - Had to change data source class name from
+  - `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`
 
-  - `com.mysql.jdbc.jdbc2.optional.MysqlDataSource` 
-
-    to 
+    to
 
   - `com.mysql.cj.jdbc.MysqlDataSource `
 
@@ -302,7 +283,7 @@ So Based on this we have options:
 ### Deployment of icat-server
 
 - Deployment of icat application failing due to `class org.icatproject.core.IcatException No authenticator of type simple is working`
-  - This had to be done manually inside the admin UI because of below issue. 
+  - This had to be done manually inside the admin UI because of below issue.
   - Remove the security layer of the web.xml so we can talk over http
 - Deployment failing on container start due to bug in Payara. Question ask and answered [here](https://stackoverflow.com/questions/69117678/deploy-war-file-in-payara-5-docker-container)
 - Deployment now failing due the fact that icat can't find `glassfish-acc.xml` . It does exist in the container but the starting payara directory is different.
@@ -310,8 +291,8 @@ So Based on this we have options:
 
 ### Ping auth container from icat container
 
-- `curl -k https://auth_payara_container:8181/authn.simple/version/`
-- `nmap -p 8181 auth_payara_container`
+- `curl -k https://auth_simple_container:8181/authn.simple/version/`
+- `nmap -p 8181 auth_simple_container`
 
 ## :arrow_right: Authentication
 
@@ -326,8 +307,8 @@ Setting up the Auth image, which should address one of the icat issues above
 - Issue with icat service not being able to connect to Auth service
   - This was due to the fact that I didn't have a web.xml for the auth service and had the security layer enabled in icat's web.xml
   - Removing this means I can now communicate, both internally and externally of http not https and so no certification is needed
-  - `curl http://auth_payara_container:8080/authn.simple/version/` from with icat.server container
-- Bash into container using `docker exec -it auth_payara_container bash`
+  - `curl http://auth_simple_container:8080/authn.simple/version/` from with icat.server container
+- Bash into container using `docker exec -it auth_simple_container bash`
 - Ping icat from with container `curl http://icat_payara_container:8080/icat/version/`
 
 ## :arrow_right: IDS
@@ -355,7 +336,6 @@ Setting up the Auth image, which should address one of the icat issues above
 - Cd to data gateway-api folder
 
 - Run `python3.6 -m util.icat_db_generator -s 4 -y 1` with the icat docker suite up and running, should take around 5-10 mins
-
   - With config ( `0.0.0.0:3306` is our `icat_mariadb_container`):
 
     ```
@@ -380,32 +360,26 @@ Setting up the Auth image, which should address one of the icat issues above
     curl -k --data 'json={"plugin":"simple", "credentials": [{"username":"root"}, {"password": "pw"}]}' -w'\n' https://localhost:18181/icat/session
     ```
 
-
 ## :arrow_right: Topcat
 
 - Had to refactor db setup as had to create a new data base for tomcat, couldn't use the existing icat
 
   <img src="/Users/alexkemp/Developement/icat/backup/03.12.21/gitLab/icat-cloud-native-migration/documentation/images/mariadb_setup.png" width="520px" />
-
   - All database comms inside docker is done on port 3306
 
   - This is because the address is resolved by host name in the Docker file:
-
     - `ARG DATABASE_URL=jdbc:mysql://topcat_mariadb_container:3306/topcat`
 
   - `topcat.properties`is store in
-
     - Old world: `home/glassfish/payara41/glassfish/domain1/config`
     - New world: `payara/appserver/glassfish/domains/domain1/config`
 
   - The `contents/pages` directory is copied into the root level of the war file before it is re-packed
 
   - Getting `Archive type of /opt/payara/deployments/migrations was not recognized` error
-
     - I think its because its trying to deploy the folder because its in the deploy dir
 
   - `facility.LILS.downloadType.http` should be ids url so:
-
     - `facility.LILS.downloadType.http` = http://ids_payara_container:8080
 
   - Needed to setup the mail javamail-resource
@@ -414,8 +388,6 @@ Setting up the Auth image, which should address one of the icat issues above
 
   - Can only log in using CHROME, Firefox says no!
 
-    
-
 ## :arrow_right: Adding Test Data Automatically on start:
 
 - Instead of having to run the script to add test data every time the docker stack is brought down and up, it would be better to automate it so that test data is automatically injected when the containers are started.
@@ -423,14 +395,12 @@ Setting up the Auth image, which should address one of the icat issues above
 - Using the data gateway-api utils script, copying it into a container running the script after the db and icat have successfully started
 
 - Data can bee seen using admirer at http://localhost:8080:
-
   - Server = icat_mariadb_container
   - Username = root
   - password = pw
   - Database = icatdb
 
 - To get test data from my Mac run:
-
   - `curl -k --data 'json={"plugin":"simple", "credentials": [{"username":"root"}, {"password": "pw"}]}' -w'\n' https://localhost:18181/icat/session` to get session id.
 
   - `curl -k --data "sessionId=aa923fd0-056b-4dca-bf31-9d6659b69bdf" --data-urlencode 'query=SELECT df.name, df.location, df.fileSize FROM Datafile df where df.fileSize < 10000000' --data "max=10" -w'\n' --get https://localhost:18181/icat/jpql`
@@ -442,14 +412,11 @@ Setting up the Auth image, which should address one of the icat issues above
   ```
 
   - The testdata container needs the mariadb and the icat payara app to be up and running. This is because the icat payara app creates the tables.
-
     - Mariadb starts and creates the icat database
 
     - Icat-server starts and add the tables, runs the migrations
 
     - Only then can the testdata container run and put data into the tables
-
-      
 
 ## :arrow_right: DataGateWay
 
@@ -460,7 +427,7 @@ Setting up the Auth image, which should address one of the icat issues above
   - https://github.com/ral-facilities/datagateway-api
   - https://github.com/ral-facilities/scigateway-auth/
 - Docs https://github.com/ral-facilities/scigateway/wiki
-- Example UI [scigateway-preprod.esc.rl.ac.uk/](http://scigateway-preprod.esc.rl.ac.uk/) 
+- Example UI [scigateway-preprod.esc.rl.ac.uk/](http://scigateway-preprod.esc.rl.ac.uk/)
 - Starting with auth
 
 ### Scigateway-auth
@@ -473,35 +440,34 @@ Setting up the Auth image, which should address one of the icat issues above
 
 ### Scigateway
 
--  **Scigateway** uses **Datagateway** plugins, these are [here](https://github.com/ral-facilities/datagateway/releases)
--  These are not application servers so need to be served. Probably using apache.
--  Using `yarn start` to start scigateway for now which is not meant for development, that will need `yarn build` to build the app then another server (nginx or apache) to serve it up. Good tutorial [here](https://dev.to/karanpratapsingh/dockerize-your-react-app-4j2e).
--  Need to set up [settings file in Scigateway](https://github.com/ral-facilities/scigateway/blob/master/public/settings.example.json) to point to auth url.... But which auth??
--  Need to configure the Scigateway plugins [settings file](https://github.com/ral-facilities/scigateway/blob/master/micro-frontend-tools/dev-plugin-settings.example.json). Names in the Scigateway plugins need to match the names of the plugins. 
--  Need to set up settings files in each of the plugins.
--  `docker exec -t -i scigateway_container /bin/sh` to bash into node container
+- **Scigateway** uses **Datagateway** plugins, these are [here](https://github.com/ral-facilities/datagateway/releases)
+- These are not application servers so need to be served. Probably using apache.
+- Using `yarn start` to start scigateway for now which is not meant for development, that will need `yarn build` to build the app then another server (nginx or apache) to serve it up. Good tutorial [here](https://dev.to/karanpratapsingh/dockerize-your-react-app-4j2e).
+- Need to set up [settings file in Scigateway](https://github.com/ral-facilities/scigateway/blob/master/public/settings.example.json) to point to auth url.... But which auth??
+- Need to configure the Scigateway plugins [settings file](https://github.com/ral-facilities/scigateway/blob/master/micro-frontend-tools/dev-plugin-settings.example.json). Names in the Scigateway plugins need to match the names of the plugins.
+- Need to set up settings files in each of the plugins.
+- `docker exec -t -i scigateway_container /bin/sh` to bash into node container
 
 ### Plugins:
 
--  There zips are build with a deployment yaml [here](https://github.com/ral-facilities/datagateway/blob/6dd8b5a2c3394117f6f98bf5f22b917ce7860c6a/.github/workflows/release-build.yml#L51) , this builds a main.js in each of the 3 plugins which holds urls Scigateway needs. We can't copy the main.js at build time as it needs to be dynamic so will need to find and replace certain URL when building the docker image.
--  Scigateway uses these urls in main.js files to give higher, user level access to the plugins from scigateway home page
--  Need to edit the http.conf to allow for CORS
+- There zips are build with a deployment yaml [here](https://github.com/ral-facilities/datagateway/blob/6dd8b5a2c3394117f6f98bf5f22b917ce7860c6a/.github/workflows/release-build.yml#L51) , this builds a main.js in each of the 3 plugins which holds urls Scigateway needs. We can't copy the main.js at build time as it needs to be dynamic so will need to find and replace certain URL when building the docker image.
+- Scigateway uses these urls in main.js files to give higher, user level access to the plugins from scigateway home page
+- Need to edit the http.conf to allow for CORS
 
----------------------------------------------------
+---
 
 ## :arrow_right: Todo, Technical Dept and Improvement ideas :bulb:
 
 - [x] Get topcat deployed
 
 - [x] Add test data automatically, create a container with the data gateway api in it so I can use the script to auto generate test data on startup
-
-  - [x] Optimise icat health check 
-  - [x] Sort mariadb warning 
-  - [x] Refactor lay out 
-  - [x] Remove miriadb docker file as do everything through docker-compose 
+  - [x] Optimise icat health check
+  - [x] Sort mariadb warning
+  - [x] Refactor lay out
+  - [x] Remove miriadb docker file as do everything through docker-compose
   - [x] Get rid of config and use env files for testdata container
-  - [x] sort commands/config name convention out 
-  - [x] Document compose health check setup 
+  - [x] sort commands/config name convention out
+  - [x] Document compose health check setup
 
 - [x] Document config setup in readme
 
@@ -524,7 +490,6 @@ Setting up the Auth image, which should address one of the icat issues above
 - [ ] Change ICAT to use environment variables instead of config files
 
 - [ ] Need to generally do some load testing of icat to test jvm memory options which are set by default by the container
-
   - [ ] Good application of this from divileroo [here](https://deliveroo.engineering/2019/01/08/how-to-debug-memory-usage-of-a-jvm-based-application.html)
   - [ ] Test `ExitOnOutOfMemoryError` vs `OnOutOfMemoryError` and other jvm options
 
@@ -536,21 +501,12 @@ Setting up the Auth image, which should address one of the icat issues above
 
 - [ ] Productionize datagateway stack
 
-  
-
   Datagateway Auth:
 
 - [ ] Sort out creating keys outside of image.
 
 - [ ] App to check config on app start
 
-  
-
   Datagateway API
 
 - [ ] Remove root user name and password and instead add a rule to ICAT to allow the IDS reader account to have read all access to the database
-
-  
-
-  
-
