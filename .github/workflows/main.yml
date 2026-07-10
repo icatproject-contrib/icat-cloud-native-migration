@@ -24,9 +24,9 @@ jobs:
         with:
           push: true
           context: ./authentication
-          args:
-            AUTH_TYPE: simple
-            AUTH_VERSION: 2.0.1
+          build-args: |
+            AUTH_TYPE=simple
+            AUTH_VERSION=2.0.1
           tags: ${{ secrets.HARBOR_URL }}/icat_auth_simple:latest
 
       - name: Build and push anon authenticator
@@ -34,9 +34,9 @@ jobs:
         with:
           push: true
           context: ./authentication
-          args:
-            AUTH_TYPE: anon
-            AUTH_VERSION: 2.0.1
+          build-args: |
+            AUTH_TYPE=anon
+            AUTH_VERSION=2.0.1
           tags: ${{ secrets.HARBOR_URL }}/icat_auth_anon:latest
 
       - name: Build and push icat
